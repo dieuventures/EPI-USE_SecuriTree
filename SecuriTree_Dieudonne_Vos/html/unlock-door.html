@@ -1,0 +1,75 @@
+<html> 
+    <head> 
+        <title>
+            SecuriTree - Security Dashboard
+        </title>
+        <link href = "../CSS/style.css" rel = "stylesheet" type = text/css>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <a href="#slider-carousel" class="logo"><img src="../images/SecuriTree.png"></a>
+                    <h1> Unlock Door: </h1>
+                    <p> Please enter the ID of the door to unlock</p>
+                    <br> 
+                        ID: <br>
+                        <input type="text" name="txtid" id="uid" placeholder="door id">
+                    <br><br> 
+                    <button id = "unlock-door" class="unlock-door" type = "button" onclick="unlockdoor()"><img src="../images/unlock.png" class="img-unlock"></button>
+                    <p>Press esc to return to door manager screen</p>
+                </div>
+    
+            </div>
+
+
+        </header>
+
+        <script >
+            function unlockdoor(){
+                var uid = document.getElementById("uid").value
+            
+                $.ajax
+                ({
+                    url: "../json/system_data.json" ,
+                    dataType: 'json' ,
+                    type: 'get',
+                    cache: 'false',
+                    success: function unlock (data)
+                        {
+                            $(data.system_data).each(function(index, value)
+                                {   
+                                    if (uid = "" || uid != value.doors[index].id){
+                                        alert("Empty/Invalid ID field - Please enter ID")
+                                    }
+                                    else {
+                                        if (uid == value.doors[index].id)
+                                        {
+                                            if (value.doors[index].status == "open"){
+                                                alert("door is already open")
+                                            }
+                                            else{
+                                                value.doors[index].status = "open"
+                                                alert("opened door")
+                                                console.log(value.doors[index])
+                                            }
+                                        }
+                                    }
+                                });
+                        }
+                                    
+                });
+
+            }
+
+        document.addEventListener('keydown', function(e){
+            if (e.key === "Escape"){
+                location.href = "./door-manager.html"
+                alert("returning to door manager")
+            }
+        });
+        </script>
+    </body>
+</html>

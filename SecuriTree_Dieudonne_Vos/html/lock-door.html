@@ -1,0 +1,72 @@
+<html> 
+    <head> 
+        <title>
+            SecuriTree - Security Dashboard
+        </title>
+        <link href = "../CSS/style.css" rel = "stylesheet" type = text/css>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+    </head>
+
+    <body>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <a href="#slider-carousel" class="logo"><img src="../images/SecuriTree.png"></a>
+                    <h1> Lock Door: </h1>
+                    <p> Please enter the ID of the door to lock</p>
+                    <br> 
+                        ID: <br>
+                        <input type="text" name="txtid" id="id" placeholder="door id">
+                    <br><br> 
+                    <button id = "lock-door" class="lock-door" type = "button" onclick="lockdoor()"><img src="../images/lock.png" class="img-lock"></button>
+                    <p>Press esc to return to door manager screen</p>
+                </div>
+            </div>
+        </header>
+
+        <script >
+            function lockdoor(){
+            var id = document.getElementById("id").value
+        $.ajax
+        ({
+            url: "../json/system_data.json" ,
+            dataType: 'json' ,
+            type: 'get',
+            cache: 'false',
+            success: function lock (data)
+                {
+                    $(data.system_data).each(function(index, value)
+                        {   
+                            if (id == "" || id != value.doors[index].id){
+                                alert("Empty/Invalid ID field - Please enter ID")
+                            }
+                            else {
+                                if (id == value.doors[index].id)
+                                {
+                                    if (value.doors[index].status = "closed"){
+                                        alert("door is already closed")
+                                    }
+                                    else{
+                                        value.doors[index].status = "closed"
+                                        alert("closed door")
+                                        console.log(value.doors[index])
+                                    }
+                                }
+                            }
+                        });
+                }
+                            
+            });
+
+        }
+
+        document.addEventListener('keydown', function(e){
+            if (e.key === "Escape"){
+                location.href = "./door-manager.html"
+                alert("returning to door manager")
+            }
+        });
+        </script>
+    </body>
+</html>

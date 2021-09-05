@@ -1,0 +1,88 @@
+<html> 
+    <head> 
+        <title>SecuriTree</title>
+        <link href = "./CSS/style.css" rel = "stylesheet" type = text/css>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+
+       
+    </head>
+
+    <body>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <a href="#slider-carousel" class="logo"><img src="images/SecuriTree.png"></a>
+                    <form> 
+                        <h1> Welcome to SecuriTree</h1>
+                        <p>Please enter your login credentials to begin</p>
+                            Username: <br>
+                            <input type="text" name="txtuser" id="username" placeholder="username">
+                            <br> 
+                            Password: <br>
+                            <input type="text" name="txtpass" id="password" placeholder="password">
+                            <br><br>
+                        </p>
+                        <button id = "log-in" class="log-inb" type = "button" onclick="validateLogin()"><img src="./images/login.png" class="img-login"></button>
+                       
+                        
+                    </form>    
+                    <script> 
+
+                        function clearForm() {
+                            document.getElementById("username").innerHTML = "";
+                            document.getElementById("password").innerHTML = "";
+                        }
+
+
+                        //fetch("./json/registered_users.json")
+                        function validateLogin()
+                        {
+                            var username = document.getElementById("username").value
+                            var password = document.getElementById("password").value
+
+                            var user = false;
+
+                            
+
+                            if ((username == "" || username == null) || (password == "" || password == null)){
+                                alert("Please enter all fields");
+                            }
+                            else
+                            {
+                                $.ajax
+                                ({
+                                    url: "./json/registered_users.json" ,
+                                    dataType: 'json' ,
+                                    type: 'get',
+                                    cache: 'false',
+                                    success: function usernames (data)
+                                    {
+                                        $(data.registered_users).each(function(index, value)
+                                        {
+                                            if (username == value.username && password == value.password)
+                                            {
+                                                user = true ;
+                                                location.href = "../html/home.html"   
+                                            }   
+                                           
+                                        });
+                                        if  (user == false){
+                                            alert("Username or password incorrect")
+                                        } 
+                                    } 
+                                     
+                                });
+                                      
+                            }
+                            
+                        }
+                            
+
+                            
+                    </script>
+                </div>
+            </div>
+        </header>        
+    
+    </body>
+</html>

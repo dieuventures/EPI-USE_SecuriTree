@@ -1,0 +1,133 @@
+  <html> 
+    <head> 
+        <title>
+            SecuriTree - Security Dashboard
+        </title>
+        <link href = "../CSS/style.css" rel = "stylesheet" type = text/css>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <H1>Entity Hierarchy</H1>
+        <div id = "system_data"></div>
+        <script>
+           $.ajax
+            ({
+                url: "../json/system_data.json" ,
+                dataType: 'json' ,
+                type: 'get',
+                cache: 'false',
+                success: function display (data)
+                    {
+                        $(data.system_data).each(function(index, value)
+                            {  
+
+                                var t = 0;
+                                var area = value.areas.length;
+                                var doorlength = value.doors.length;
+                                //console.log(doorlength)
+                                var accesslength = value.access_rules.length; 
+                                var doors = "";
+                                var accessrules = "";
+                                console.log("\-" + value.areas[t].name);
+                                var parent = value.areas[t].id;
+                                var i=0;
+                                for (i = 0; i <= 3; i ++){  
+                                    try {
+                                        if (value.doors[i].parent_area_id == parent){  
+                                            //Wonka Factory Doors
+                                            if (value.doors[i].status = "open"){
+                                                //console.log(value.doors[i].name + " (UNLOCKED)");
+                                                doors = doors + value.doors[i].name + " (UNLOCKED)" + ", "
+                                            }
+                                            else{
+                                                //console.log(value.doors[i].name + " (LOCKED)");
+                                                doors = doors + value.doors[i].name + " (LOCKED)" + ", "
+                                            } 
+                                                var doorid = value.doors[i].id ; 
+                                                accessrules = ""
+                                                    for (ii = 0; ii <= accesslength; ii ++){
+                                                        var dooramount = value.access_rules[ii].doors.length;
+                                                        var iii = 0;
+                                                        
+                                                        //console.log(dooramount);
+                                                        for (iii =0; iii <= dooramount; iii++){
+                                                            if (value.access_rules[ii].doors[iii] == doorid){
+                                                                //console.log(value.access_rules[ii].name)
+                                                                accessrules = accessrules + value.access_rules[ii].name + ", "
+                                                            } 
+                                                        }
+                                                
+                                                    } 
+ 
+                                        }
+                                    } catch (error) {
+                                        console.log(error + " encountered");
+                                    }
+                                        
+                                }  
+                                    
+                                    console.log("|-[DOORS]: " + doors);
+                                    console.log("|- [Access Rules]: " + accessrules);
+                                    t = t + 1;
+                                    //console.log(t)
+
+                                //console.log(area)
+                                for (t = 1 ; t <= area ; t++ ){
+                                    var k = 0;
+                                    var room = value.areas[t].id;
+                                    console.log("\- " + value.areas[t].name);
+                                    var dooramount = value.doors.length;
+                                    doors = ""
+                                    for (k = 0; k<= dooramount; k++){
+                                        try {
+                                            if (value.doors[k].parent_area = room){ //area 
+                                                if (value.doors[i].status = "open"){
+                                                        //console.log(value.doors[i].name + " (UNLOCKED)");
+                                                        doors = doors + value.doors[i].name + " (UNLOCKED)" + ", "
+                                                    }
+                                                    else{
+                                                        //console.log(value.doors[i].name + " (LOCKED)");
+                                                        doors = doors + value.doors[i].name + " (LOCKED)" + ", "
+                                                    } 
+                                                    
+                                                     
+                                                    var doorid = value.doors[k].id ; 
+                                                    accessrules = ""
+                                                    for (ii = 0; ii <= accesslength; ii ++){
+                                                        var dooramount = value.access_rules[ii].doors.length;
+                                                        var iii = 0;
+                                                        
+                                                        //console.log(dooramount);
+                                                        for (iii =0; iii <= dooramount; iii++){
+                                                            if (value.access_rules[ii].doors[iii] == doorid){
+                                                                //console.log(value.access_rules[ii].name)
+                                                                accessrules = accessrules + value.access_rules[ii].name + ", "
+                                                            } 
+                                                        }
+                                                
+                                                    }   
+                                                    
+                                                
+                                            }
+                                        } catch (error) {
+                                            console.log(error + " encountered")
+                                        }
+
+                                }
+
+                                console.log("|- [DOORS] " + doors);
+                                console.log("|- [Access Rules]: " + accessrules);
+
+                            }
+    
+                            });
+                    }
+                                
+            });
+
+            
+
+        </script>
+    </body>
+</html>
