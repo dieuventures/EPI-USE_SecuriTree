@@ -126,7 +126,12 @@
                                 
             });
 
-            
+           document.addEventListener('keydown', function(e){
+            if (e.key === "Escape"){
+                location.href = "./home.html"
+                alert("returning to home page")
+            }
+           }); 
 
         </script>
     </body>
